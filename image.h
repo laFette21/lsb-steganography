@@ -7,13 +7,15 @@
 class Image
 {
     unsigned size;
-    unsigned char header[54];
+    unsigned char* header;
     unsigned char* data;
 
 public:
-    Image(): data(nullptr) {}
-    Image(const std::string& path);
-    ~Image() { delete[] data; }
+    Image(): size(0), header(nullptr), data(nullptr) {}
+    Image(const std::string& path): size(0), header(nullptr), data(nullptr) { scan(path); }
+    ~Image() { delete[] header; delete[] data; }
+
+    void scan(const std::string& path);
 };
 
 #endif // IMAGE_H

@@ -1,6 +1,6 @@
 #include "image.h"
 
-Image::Image(const std::string& path)
+void Image::scan(const std::string& path)
 {
     std::ifstream f(path);
 
@@ -8,6 +8,10 @@ Image::Image(const std::string& path)
         throw std::runtime_error("Failed to open the BMP file!");
     else if(f.peek() == EOF)
         throw std::runtime_error("This BMP file is an empty file!");
+
+    size = 0;
+    delete[] header;
+    delete[] data;
 
     char c;
 
@@ -22,12 +26,14 @@ Image::Image(const std::string& path)
     f.clear();
     f.seekg(0, std::ios::beg);
 
+    header = new unsigned char[54];
+
     for(int i = 0; i < 54; ++i)
         f >> header[i];
 
     data = new unsigned char[size];
 
-    for(int i = 0; !f.fail(); ++i)
+    for(int i = 0; !f.fail(); ++i) // TODO: Check if I could use the size variable instead of !f.fail()
         f >> data[i];
 
     f.close();
