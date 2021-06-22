@@ -3,12 +3,15 @@
 
 #include <fstream>
 #include <string>
+#include <vector>
+#include <bitset>
 
 class Image
 {
     unsigned size;
-    unsigned char* header;
-    unsigned char* data;
+    char* header;
+    char* data;
+    std::vector<char> dibheader;
 
 public:
     Image(): size(0), header(nullptr), data(nullptr) {}
@@ -16,6 +19,8 @@ public:
     ~Image() { delete[] header; delete[] data; }
 
     void scan(const std::string& path);
+    void encode(const std::string& path);
+    std::string decode();
 };
 
 #endif // IMAGE_H
